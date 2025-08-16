@@ -1,5 +1,7 @@
 package br.edu.ifpb.chatnoir.model;
 
+import java.util.Objects;
+
 import br.edu.ifpb.chatnoir.enums.EstadoCelula;
 
 public class Celula {
@@ -13,30 +15,23 @@ public class Celula {
     }
 
     public boolean isEmpty(){
-        return false;
+        return estadoCelula == EstadoCelula.VAZIA;
     }
 
     public boolean isBlocked(){
-        return false;
+        return estadoCelula == EstadoCelula.BLOQUEADA;
     }
 
     public  boolean hasCat(){
-        return false;
+        return estadoCelula == EstadoCelula.GATO;
     }
+
     public int getLinha() {
         return linha;
     }
 
-    public void setLinha(int linha) {
-        this.linha = linha;
-    }
-
     public int getColuna() {
         return coluna;
-    }
-
-    public void setColuna(int coluna) {
-        this.coluna = coluna;
     }
 
     public EstadoCelula getEstadoCelula() {
@@ -44,6 +39,6 @@ public class Celula {
     }
 
     public void setEstadoCelula(EstadoCelula estadoCelula) {
-        this.estadoCelula = estadoCelula;
+        this.estadoCelula = Objects.requireNonNull(estadoCelula);
     }
 }
