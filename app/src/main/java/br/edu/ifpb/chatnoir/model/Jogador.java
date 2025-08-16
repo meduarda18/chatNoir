@@ -30,4 +30,8 @@ public class Jogador {
     public void resetarVitorias() {
         this.vitorias = 0;
     }
+
+    public void jogar(Tabuleiro tabuleiro, int linha, int coluna){
+        tabuleiro.bloquearCelula(linha, coluna);
+    }
 }

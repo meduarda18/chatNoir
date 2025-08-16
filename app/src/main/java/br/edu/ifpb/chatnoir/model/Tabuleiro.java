@@ -1,25 +1,19 @@
 package br.edu.ifpb.chatnoir.model;
 
+import java.util.Random;
+
 import br.edu.ifpb.chatnoir.enums.EstadoCelula;
 
 public class Tabuleiro {
     private int tamanho = 11;
     private final Celula[][] celulas;
-    private final int linhaGato, colunaGato;
 
     public Tabuleiro(int tamanho){
         this.tamanho = tamanho;
         this.celulas = new Celula[tamanho][tamanho];
-
-        for(int l = 0; l < tamanho; l++){
-            for(int c = 0; c < tamanho; c++){
-                celulas[l][c] = new Celula(l, c, EstadoCelula.VAZIA);
-            }
-        }
-
-        this.linhaGato = tamanho/2;
-        this.colunaGato = tamanho/2;
-        getCelula(linhaGato, colunaGato).setEstadoCelula(EstadoCelula.GATO);
+        inicializarTabuleiro();
+        posicionarGato();
+        bloquearAleatorias(9);
     }
 
     public int getTamanho() {
@@ -31,12 +25,42 @@ public class Tabuleiro {
         return celulas[linha][coluna];
     }
 
-    public int getLinhaGato() {
-        return linhaGato;
+    private void inicializarTabuleiro() {
+        for (int i = 0; i < tamanho; i++) {
+            for (int j = 0; j < tamanho; j++) {
+                celulas[i][j] = new Celula(i, j, EstadoCelula.VAZIA);
+            }
+        }
     }
 
-    public int getColunaGato() {
-        return colunaGato;
+    private void posicionarGato() {
+        int centro = tamanho / 2;
+        celulas[centro][centro].setEstadoCelula(EstadoCelula.GATO);
+        Celula gato = celulas[centro][centro];
+    }
+
+    private void bloquearAleatorias(int qnt){
+        Random random = new Random();
+        int bloqueadas = 0;
+        while (bloqueadas < qnt){
+            int linha = random.nextInt(tamanho);
+            int coluna = random.nextInt(tamanho);
+
+            Celula celula = celulas[linha][coluna];
+
+            if(celula.getEstadoCelula() == EstadoCelula.VAZIA){
+                celula.setEstadoCelula(EstadoCelula.BLOQUEADA);
+                bloqueadas++;
+            }
+        }
+    }
+
+    public void bloquearCelula(int linha, int coluna) {
+        Celula alvo = celulas[linha][coluna];
+
+        if (alvo.getEstadoCelula() == EstadoCelula.VAZIA) {
+            alvo.setEstadoCelula(EstadoCelula.BLOQUEADA);
+        }
     }
 
     private boolean estaDentro(int linha, int coluna) {
@@ -48,4 +72,6 @@ public class Tabuleiro {
             throw new IndexOutOfBoundsException("Fora do tabuleiro: (" + linha + "," + coluna + ")");
         }
     }
+
+
 }
